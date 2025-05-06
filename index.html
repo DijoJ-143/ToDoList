@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TO-DO APP</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Page 1: Description -->
+    <section class="intro">
+      <div class="content">
+        <h1 class="title">Welcome to Our To-Do List App</h1>
+        <p class="description">
+          Our To-Do List app helps you stay organized and keep track of all your
+          tasks. Easily add, check off, and remove tasks. It’s simple, fast, and
+          efficient!
+        </p>
+        <button class="scroll-button">Scroll Down to Try</button>
+      </div>
+    </section>
+
+    <!-- Page 2: To-Do List Application -->
+    <section class="todo-app-section">
+      <div class="container">
+        <div class="todo-app">
+          <details class="detail">
+            Enter the tasks that: <br />
+            <ol type="a">
+              <li>You want to complete</li>
+              <li>You want to remember</li>
+            </ol>
+          </details>
+          <h1>
+            TODO-LIST
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="icon-1"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0-3.75-3.75M17.25 21 21 17.25"
+              />
+            </svg>
+          </h1>
+          <div class="row">
+            <input type="text" id="input-box" placeholder="Add your text" />
+            <button id="addButton" onclick="addTask()">ADD</button>
+          </div>
+          <ul class="list-container" id="listContainer"></ul>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // variables used
+      const inputBox = document.getElementById("input-box"); // Reference to the input box for adding tasks
+      const listContainer = document.getElementById("listContainer"); // Reference to the container where tasks will be listed
+
+      // inputBox.value for input elements (<input>, <textarea>)
+      // li.textContent for non-input HTML elements (<li>, <div>, etc.)
+
+      // task adding logic
+      function addTask() {
+        // Check if the input box is empty
+        if (inputBox.value === "") {
+          alert("Please enter a task."); // Alert if no task is entered
+        } else {
+          let li = document.createElement("li"); // Create a new <li> element for the task
+          li.textContent = inputBox.value; // Set the text content of the <li> to the input box value
+          listContainer.appendChild(li); // Append the new <li> to the list container
+
+          // Create a span for the delete icon (×)
+          let span = document.createElement("span");
+          span.textContent = "×"; // Set the text content of the span to '×'
+          li.appendChild(span); // Append the span (delete icon) inside the <li>
+        }
+
+        inputBox.value = ""; // Clear the input box after adding the task
+
+        saveData(); // Save the current task list in localStorage
+      }
+
+      // Event listener for clicking on the task list
+      listContainer.addEventListener("click", function (e) {
+        // If the clicked element is a task (li), toggle the "checked" class
+        if (e.target.tagName.toLowerCase() === "li") {
+          e.target.classList.toggle("checked"); // Mark the task as completed or uncompleted by toggling the class
+          saveData(); // Save the updated task list to localStorage
+        }
+        // If the clicked element is the delete icon (span), remove the task
+        else if (e.target.tagName.toLowerCase() === "span") {
+          e.target.parentElement.remove(); // Remove the <li> element that contains the clicked span
+          saveData(); // Save the updated task list to localStorage
+        }
+      });
+
+      // Function to save the current task list to localStorage
+      function saveData() {
+        localStorage.setItem("data", listContainer.innerHTML); // Store the innerHTML of the list container in localStorage
+      }
+
+      // Function to load and display the saved task list from localStorage
+      function showData() {
+        listContainer.innerHTML = localStorage.getItem("data"); // Retrieve and set the saved tasks from localStorage
+      }
+
+      // Call showData function to load saved tasks when the page loads
+      showData();
+
+      // Event listener for "Enter" key press to add tasks
+      inputBox.addEventListener("keydown", function (e) {
+        // Check if the pressed key is "Enter"
+        if (e.key === "Enter") {
+          addTask(); // Call the addTask function to add the task when Enter is pressed
+        }
+      });
+
+      // Handle scroll to show To-Do app after clicking the button
+      const scrollButton = document.querySelector(".scroll-button"); // Reference to the scroll down button
+      const todoAppSection = document.querySelector(".todo-app-section"); // Reference to the To-Do app section
+
+      // Event listener for the scroll down button click
+      scrollButton.addEventListener("click", function () {
+        // Smooth scroll to the next section (To-Do app section)
+        window.scrollTo({
+          top: window.innerHeight, // Scroll to the height of the window (next section)
+          behavior: "smooth", // Smooth scroll effect
+        });
+
+        // Display the To-Do app section after the scroll effect
+        setTimeout(() => {
+          todoAppSection.style.display = "flex"; // Make the To-Do app section visible after scrolling
+        }, 1000); // Delay to allow smooth scrolling
+      });
+    </script>
+  </body>
+</html>
