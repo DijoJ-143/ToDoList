@@ -161,7 +161,7 @@ ul li.checked {
 
 ul li.checked::before {
   border-radius: 60%;
-  background-image: url(/image/th.jpg);
+  background-image: url(th.jpg);
   background-size: cover;
   border: 1px solid #555;
 }
